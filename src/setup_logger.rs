@@ -2,6 +2,8 @@ use std::path::Path;
 
 use tracing_subscriber::{Layer, fmt, layer::SubscriberExt, util::SubscriberInitExt};
 
+use crate::build_info::{PROJECT_NAME, PROJECT_VERSION};
+
 pub async fn setup_logger() -> (
     tracing_appender::non_blocking::WorkerGuard,
     tracing_appender::non_blocking::WorkerGuard,
@@ -22,22 +24,29 @@ pub async fn setup_logger() -> (
     // 파일 자동 생성
     let file_appender = tracing_appender::rolling::never(
         "./logs",
-        format!("transaction_{}.log", app_start_time.format("%Y%m%d_%H%M%S")),
+        format!(
+            "{}_{}_{}.log",
+            PROJECT_NAME,
+            PROJECT_VERSION,
+            app_start_time.format("%Y%m%d_%H%M%S")
+        ),
     );
-    
+
     // 별도의 워커 스레드에서 로거를 실행하여 로깅이 작업 스레드 방해하지 않도록 설정
     let (non_blocking, guard) = tracing_appender::non_blocking(file_appender);
-    
+
     // 파일로 로깅할 때 JSON으로 구조적 로깅이 되도록, 그리고 터미널 아웃풋 캐릭터가 들어가지 않도록 설정
     let file_layer = fmt::layer()
-        .with_ansi(false)
         .json()
+        .with_ansi(false)
+        .with_file(true)
+        .with_line_number(true)
         .with_writer(non_blocking)
         .with_filter(tracing_subscriber::filter::LevelFilter::DEBUG);
 
     // tracing stdout 로거 구성
     let (non_blocking_stdout, stdout_guard) = tracing_appender::non_blocking(std::io::stdout());
-    
+
     // 워커 스레드에서 로깅 구성
     let stdout_layer = fmt::layer()
         .pretty()

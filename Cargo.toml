@@ -39,13 +39,14 @@ panic = "abort"
 
 
 # .env loading
-dotenvy = "0.15.7"
+# dotenvy = "0.15.7"
 
 # async runtime
 tokio = { version = "1.46.1", default-features = false, features = [
     "macros",
     "rt-multi-thread",
     "fs",
+    "time",
 ] }
 
 # loggers
@@ -57,7 +58,7 @@ tracing-appender = "0.2.3"
 # anyhow = "1.0.98"
 
 # system information
-num_cpus = "1.17.0"
+# num_cpus = "1.17.0"
 # sysinfo = "0.36.0"
 
 # serialization/deserialization
