@@ -42,7 +42,7 @@ panic = "abort"
 # dotenvy = "0.15.7"
 
 # async runtime
-tokio = { version = "1.46.1", default-features = false, features = [
+tokio = { version = "1.48.0", default-features = false, features = [
     "macros",
     "rt-multi-thread",
     "fs",
@@ -51,7 +51,7 @@ tokio = { version = "1.46.1", default-features = false, features = [
 
 # loggers
 tracing = { version = "0.1.41", features = ["std"] }
-tracing-subscriber = { version = "0.3.19", features = ["fmt", "json"] }
+tracing-subscriber = { version = "0.3.20", features = ["fmt", "json"] }
 tracing-appender = "0.2.3"
 
 # error
@@ -68,7 +68,7 @@ tracing-appender = "0.2.3"
 # bitcode = "0.6.6"
 
 # types
-chrono = { version = "0.4.41", features = ["serde"] }
+chrono = { version = "0.4.42", features = ["serde"] }
 # chrono-tz = { version = "0.10.4", features = ["serde"] }
 # scc = "2.3.4"
 # uuid = { version = "1.17.0", features = [
@@ -92,7 +92,7 @@ chrono = { version = "0.4.41", features = ["serde"] }
 # zeroize = { version = "1.8.1", features = ["derive"] }
 
 # memory allocator
-mimalloc = "0.1.47"
+mimalloc = "0.1.48"
 
 # email
 # lettre = { version = "0.11.17", default-features = false, features = [
@@ -129,6 +129,6 @@ mimalloc = "0.1.47"
 # internment = "0.8.6"
 
 [build-dependencies]
-chrono = { version = "0.4.41" }
+chrono = { version = "0.4.42" }
 dotenvy = "0.15.7"
-serde_json = { version = "1.0.140", features = ["preserve_order"] }
+serde_json = { version = "1.0.145", features = ["preserve_order"] }
