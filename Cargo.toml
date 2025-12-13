@@ -50,9 +50,9 @@ tokio = { version = "1.48.0", default-features = false, features = [
 ] }
 
 # loggers
-tracing = { version = "0.1.41", features = ["std"] }
-tracing-subscriber = { version = "0.3.20", features = ["fmt", "json"] }
-tracing-appender = "0.2.3"
+tracing = { version = "0.1.43", features = ["std"] }
+tracing-subscriber = { version = "0.3.22", features = ["fmt", "json"] }
+tracing-appender = "0.2.4"
 
 # error
 # anyhow = "1.0.98"
@@ -92,7 +92,7 @@ chrono = { version = "0.4.42", features = ["serde"] }
 # zeroize = { version = "1.8.1", features = ["derive"] }
 
 # memory allocator
-mimalloc = "0.1.48"
+mimalloc = { version = "0.1.48", features = ["v3"] }
 
 # email
 # lettre = { version = "0.11.17", default-features = false, features = [
