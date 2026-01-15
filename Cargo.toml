@@ -44,7 +44,7 @@ panic = "immediate-abort"
 # dotenvy = "0.15.7"
 
 # async runtime
-tokio = { version = "1.48.0", default-features = false, features = [
+tokio = { version = "1.49.0", default-features = false, features = [
     "macros",
     "rt-multi-thread",
     "fs",
@@ -52,7 +52,7 @@ tokio = { version = "1.48.0", default-features = false, features = [
 ] }
 
 # loggers
-tracing = { version = "0.1.43", features = ["std"] }
+tracing = { version = "0.1.44", features = ["std"] }
 tracing-subscriber = { version = "0.3.22", features = ["fmt", "json"] }
 tracing-appender = "0.2.4"
 
@@ -70,7 +70,7 @@ tracing-appender = "0.2.4"
 # bitcode = "0.6.6"
 
 # types
-chrono = { version = "0.4.42", features = ["serde"] }
+chrono = { version = "0.4.43", features = ["serde"] }
 # chrono-tz = { version = "0.10.4", features = ["serde"] }
 # scc = "2.3.4"
 # uuid = { version = "1.17.0", features = [
@@ -131,6 +131,6 @@ mimalloc = { version = "0.1.48", features = ["v3"] }
 # internment = "0.8.6"
 
 [build-dependencies]
-chrono = { version = "0.4.42" }
+chrono = { version = "0.4.43" }
 dotenvy = "0.15.7"
-serde_json = { version = "1.0.145", features = ["preserve_order"] }
+serde_json = { version = "1.0.149", features = ["preserve_order"] }

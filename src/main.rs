@@ -19,8 +19,6 @@ async fn main() {
 
     // these guards need to stay alive for the global logger to work
     let (_log_guard, _stdout_guard) = setup_logger().await;
-
     let _span_entered = tracing::info_span!(std::any::type_name_of_val(&main)).entered();
-
     info!(duration = ?app_start_time.elapsed(), "Logger initialized!");
 }
