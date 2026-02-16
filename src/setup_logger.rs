@@ -13,11 +13,11 @@ pub async fn setup_logger() -> (
     let log_dir: &Path = Path::new("./logs");
 
     // 없으면 디렉토리 생성
-    if !log_dir.exists() {
-        if let Err(e) = tokio::fs::create_dir_all(log_dir).await {
-            eprintln!("Failed to create log directory './logs': {e}");
-            std::process::exit(1);
-        }
+    if !log_dir.exists()
+        && let Err(e) = tokio::fs::create_dir_all(log_dir).await
+    {
+        eprintln!("Failed to create log directory './logs': {e}");
+        std::process::exit(1);
     }
 
     // tracing 파일 로거 구성 (비동기 논블로킹)
