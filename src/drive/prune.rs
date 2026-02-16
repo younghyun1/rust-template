@@ -1,5 +1,5 @@
 use anyhow::bail;
-use google_drive3::api::File as DriveFile;
+use google_drive3::api::{File as DriveFile, Scope};
 use tracing::{error, info, warn};
 
 use super::auth::DriveHub;
@@ -26,7 +26,8 @@ async fn list_all_files_in_folder(
             .spaces("drive")
             .order_by("createdTime desc")
             .param("fields", "nextPageToken, files(id, name, createdTime)")
-            .page_size(1000);
+            .page_size(1000)
+            .add_scope(Scope::Full);
 
         if let Some(ref token) = page_token {
             request = request.page_token(token);
@@ -97,7 +98,13 @@ pub async fn prune_old_backups(
             "Deleting old backup"
         );
 
-        match hub.files().delete(file_id).doit().await {
+        match hub
+            .files()
+            .delete(file_id)
+            .add_scope(Scope::Full)
+            .doit()
+            .await
+        {
             Ok(_) => {
                 deleted_count += 1;
             }

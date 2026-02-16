@@ -2,7 +2,7 @@ use std::io::BufReader;
 use std::path::Path;
 
 use anyhow::bail;
-use google_drive3::api::File as DriveFile;
+use google_drive3::api::{File as DriveFile, Scope};
 use tracing::{error, info};
 
 use super::auth::DriveHub;
@@ -26,6 +26,7 @@ pub async fn find_or_create_folder(
         .q(&query)
         .spaces("drive")
         .param("fields", "files(id, name)")
+        .add_scope(Scope::Full)
         .doit()
         .await;
 
@@ -71,6 +72,7 @@ pub async fn find_or_create_folder(
         .files()
         .create(folder_metadata)
         .param("fields", "id, name")
+        .add_scope(Scope::Full)
         .upload(std::io::empty(), folder_mime)
         .await;
 
@@ -158,6 +160,7 @@ pub async fn upload_file(hub: &DriveHub, folder_id: &str, file_path: &Path) -> a
         .files()
         .create(file_metadata)
         .param("fields", "id, name, size")
+        .add_scope(Scope::Full)
         .upload_resumable(reader, mime_type)
         .await;
 
