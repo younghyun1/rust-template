@@ -11,7 +11,7 @@ pub struct Config {
     pub minecraft_server_path: PathBuf,
     pub backup_temp_dir: PathBuf,
     pub mc_retention_count: usize,
-    pub google_service_account_path: PathBuf,
+    pub google_credentials_path: PathBuf,
     pub google_drive_folder_id: String,
 }
 
@@ -59,8 +59,7 @@ impl Config {
         );
 
         let minecraft_server_path = PathBuf::from(require_env("MINECRAFT_SERVER_PATH")?);
-        let google_service_account_path =
-            PathBuf::from(require_env("GOOGLE_SERVICE_ACCOUNT_PATH")?);
+        let google_credentials_path = PathBuf::from(require_env("GOOGLE_CREDENTIALS_PATH")?);
         let google_drive_folder_id = require_env("GOOGLE_DRIVE_FOLDER_ID")?;
 
         Ok(Config {
@@ -72,7 +71,7 @@ impl Config {
             minecraft_server_path,
             backup_temp_dir,
             mc_retention_count,
-            google_service_account_path,
+            google_credentials_path,
             google_drive_folder_id,
         })
     }

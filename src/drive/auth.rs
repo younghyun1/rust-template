@@ -7,59 +7,41 @@ pub type DriveHub = google_drive3::DriveHub<
     hyper_rustls::HttpsConnector<hyper_util::client::legacy::connect::HttpConnector>,
 >;
 
-pub async fn build_hub(service_account_path: &Path) -> anyhow::Result<DriveHub> {
+pub async fn build_hub(credentials_path: &Path) -> anyhow::Result<DriveHub> {
     info!(
-        path = %service_account_path.display(),
-        "Authenticating with Google Drive service account"
+        path = %credentials_path.display(),
+        "Authenticating with Google Drive"
     );
 
     // Install the rustls crypto provider before any TLS operations.
-    // ring is pulled in by hyper-rustls; rustls requires explicit installation.
     if let Err(e) = rustls::crypto::ring::default_provider().install_default() {
-        // Already installed is fine - log and continue
         tracing::debug!(error = ?e, "CryptoProvider already installed, continuing");
     }
 
-    let sa_key_bytes = match tokio::fs::read(service_account_path).await {
-        Ok(bytes) => bytes,
+    let secret = match yup_oauth2::read_authorized_user_secret(credentials_path).await {
+        Ok(s) => s,
         Err(e) => {
             error!(
                 error = %e,
-                path = %service_account_path.display(),
-                "Failed to read service account key file"
+                path = %credentials_path.display(),
+                "Failed to read authorized user credentials"
             );
             bail!(
-                "Failed to read service account key file {}: {}",
-                service_account_path.display(),
+                "Failed to read authorized user credentials from {}: {}",
+                credentials_path.display(),
                 e
             );
         }
     };
 
-    let sa_key: yup_oauth2::ServiceAccountKey = match serde_json::from_slice(&sa_key_bytes) {
-        Ok(key) => key,
-        Err(e) => {
-            error!(
-                error = %e,
-                path = %service_account_path.display(),
-                "Failed to parse service account key JSON"
-            );
-            bail!(
-                "Failed to parse service account key from {}: {}",
-                service_account_path.display(),
-                e
-            );
-        }
-    };
-
-    let auth = match yup_oauth2::ServiceAccountAuthenticator::builder(sa_key)
+    let auth = match yup_oauth2::AuthorizedUserAuthenticator::builder(secret)
         .build()
         .await
     {
         Ok(a) => a,
         Err(e) => {
-            error!(error = %e, "Failed to build service account authenticator");
-            bail!("Failed to build service account authenticator: {}", e);
+            error!(error = %e, "Failed to build authenticator");
+            bail!("Failed to build authenticator: {}", e);
         }
     };
 

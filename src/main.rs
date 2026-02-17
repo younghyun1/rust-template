@@ -90,7 +90,7 @@ async fn main() -> ExitCode {
 }
 
 async fn run_db_backup(config: &Config) -> anyhow::Result<()> {
-    let hub = drive::auth::build_hub(&config.google_service_account_path).await?;
+    let hub = drive::auth::build_hub(&config.google_credentials_path).await?;
     let folder_id =
         drive::upload::find_or_create_folder(&hub, &config.google_drive_folder_id, "DB_Backups")
             .await?;
@@ -111,7 +111,7 @@ async fn run_db_backup(config: &Config) -> anyhow::Result<()> {
 }
 
 async fn run_minecraft_backup(config: &Config) -> anyhow::Result<()> {
-    let hub = drive::auth::build_hub(&config.google_service_account_path).await?;
+    let hub = drive::auth::build_hub(&config.google_credentials_path).await?;
     let folder_id = drive::upload::find_or_create_folder(
         &hub,
         &config.google_drive_folder_id,
@@ -138,7 +138,7 @@ async fn run_minecraft_backup(config: &Config) -> anyhow::Result<()> {
 }
 
 async fn run_all(config: &Config) -> anyhow::Result<()> {
-    let hub = drive::auth::build_hub(&config.google_service_account_path).await?;
+    let hub = drive::auth::build_hub(&config.google_credentials_path).await?;
 
     // --- DB backup ---
     let db_folder_id =
@@ -182,7 +182,7 @@ async fn run_all(config: &Config) -> anyhow::Result<()> {
 }
 
 async fn run_prune(config: &Config) -> anyhow::Result<()> {
-    let hub = drive::auth::build_hub(&config.google_service_account_path).await?;
+    let hub = drive::auth::build_hub(&config.google_credentials_path).await?;
     let folder_id = drive::upload::find_or_create_folder(
         &hub,
         &config.google_drive_folder_id,
